@@ -1,0 +1,115 @@
+Excellente question ! Vous avez l'œil pour repérer les potentielles redondances, ce qui est une très bonne habitude en développement.
+
+Analysons les fichiers que vous avez mentionnés et clarifions leur rôle.
+
+**Analyse des Fichiers SCSS Mentionnés (NEXUS Phase I)**
+
+1.  **`todo-list-scss-inferno\src\app\presentation\pages\views\home\core_styles\home.scss`**
+    *   **Rôle :** C'est le **point d'entrée principal des styles SCSS pour la vue "Home"**. Son travail est d'assembler *tous* les morceaux de SCSS nécessaires spécifiquement pour cette vue.
+    *   **Contenu typique :**
+        *   `@use` des abstractions communes (comme `variables-core`, `mixins-core` depuis `common_scss_abstracts` via `includePaths`).
+        *   `@use` des abstractions spécifiques à la vue "Home" (comme `_home-variables.scss` depuis son propre dossier `abstracts`).
+        *   `@use` des styles de layout spécifiques à la vue "Home" (comme `_home-layout.scss` depuis son propre dossier `layout`).
+        *   `@use` des styles des composants utilisés *uniquement ou principalement* dans la vue "Home" (comme `_task-input.scss`, `_task-item.scss` depuis son propre dossier `components`).
+        *   Optionnellement, quelques styles très spécifiques à la page qui ne rentrent nulle part ailleurs (à utiliser avec parcimonie).
+    *   **Pourquoi il est nécessaire :** Chaque "vue" ou "page" de votre application peut avoir son propre point d'entrée SCSS. Cela permet de ne charger que les styles nécessaires pour cette vue, favorisant la modularité et potentiellement la performance (en évitant de charger tous les styles de l'application sur chaque page si vous n'utilisiez pas un framework comme Next.js qui gère bien le "code splitting"). Dans le contexte de Next.js et de l'App Router, vous importez ce fichier SCSS principal directement dans votre composant de vue (ex: `home.view.tsx`).
+
+2.  **`todo-list-scss-inferno\src\app\presentation\pages\views\home\core_styles\layout\_home-layout.scss`**
+    *   **Rôle :** Ce fichier contient les styles qui définissent la **structure et la mise en page principale de la vue "Home"**. Il s'occupe de l'agencement des grands blocs de contenu de cette vue spécifique.
+    *   **Contenu typique :**
+        *   Styles pour le conteneur principal de la page (`.home-todo-container` dans votre cas).
+        *   Styles pour les wrappers ou les sections majeures de la page (`.todo-list-wrapper`).
+        *   Positionnement des éléments clés comme le titre principal (`.home-title`).
+    *   **Pourquoi il est séparé :** Isoler les styles de layout des styles de composants ou des styles de base améliore l'organisation. Si vous devez changer la disposition de la page "Home", vous savez que c'est probablement dans ce fichier que vous devez regarder.
+
+
+
+**Récapitulatif de l'Ordre d'Implémentation et d'Utilisation (Philosophie de la Structure)**
+
+Voici une manière de penser la structure et l'ordre d'implémentation, en partant du plus global au plus spécifique, et en gardant à l'esprit la réutilisabilité :
+
+1.  **Niveau 0 : Configuration Globale (Ex: `next.config.mjs`, `globals.css`)**
+    *   **`next.config.mjs` :**
+        *   **Rôle :** Configurer Next.js, y compris les options Sass comme `includePaths`.
+        *   **Pourquoi d'abord :** Permet aux imports SCSS de fonctionner correctement dès le début.
+        *   **Contenu :** `sassOptions.includePaths` pointant vers vos dossiers d'abstractions communes.
+    *   **`globals.css` (ou `_reset.scss`, `_base.scss` importés dans un SCSS global si vous préférez tout en SCSS) :**
+        *   **Rôle :** Styles de réinitialisation (reset/normalize), styles de base pour les éléments HTML (`body`, `html`, `a`, `button`), définition des polices globales via les variables CSS de Next/Font.
+        *   **Pourquoi tôt :** Établit une base cohérente pour toute l'application.
+        *   **Contenu :** Reset CSS, styles `body`, typographie de base.
+
+2.  **Niveau 1 : Abstractions Communes SCSS (`src/app/presentation/common_scss_abstracts/`)**
+    *   **`_variables-core.scss` :**
+        *   **Rôle :** Définit les variables SCSS fondamentales partagées dans *toute* la couche de présentation (couleurs, polices, espacements, breakpoints sous forme de map, etc.).
+        *   **Pourquoi ici :** Ce sont les "constantes" de votre design system. Elles sont utilisées partout.
+        *   **Contenu :** `$color-bg-dark`, `$font-size-base`, `$breakpoints` (map), etc.
+    *   **`_mixins-core.scss` :**
+        *   **Rôle :** Définit les mixins SCSS utilitaires et réutilisables dans *toute* la couche de présentation (ex: `respond-to`, `flex-center`, `focus-ring`).
+        *   **Pourquoi ici :** Factorise des blocs de code CSS répétitifs et complexes.
+        *   **Contenu :** `@mixin respond-to`, `@mixin flex-center`. Ils utilisent souvent les variables de `_variables-core.scss`.
+    *   **`_functions-core.scss` :**
+        *   **Rôle :** Définit les fonctions SCSS personnalisées partagées (si nécessaire).
+        *   **Pourquoi ici :** Pour des calculs ou des manipulations de valeurs complexes et réutilisables.
+        *   **Contenu :** `@function px-to-rem` (si vous en aviez besoin).
+
+3.  **Niveau 2 : Composants UI Communs (Ex: `src/app/presentation/common_ui_components/Button/`)**
+    *   Si vous avez des composants React (comme un `<Button />` personnalisé) qui sont utilisés dans *plusieurs vues différentes* :
+    *   **`Button.tsx` :** Le code React du composant.
+    *   **`Button.module.scss` (ou `_button.scss` si vous préférez un style global pour ce composant commun) :**
+        *   **Rôle :** Styles spécifiques à ce composant UI commun.
+        *   **Pourquoi ici :** Encapsule les styles avec le composant.
+        *   **Contenu :** Styles pour `.button`, `.button--primary`, etc. Il `@use`ra probablement les abstractions communes (`variables-core`, `mixins-core`).
+
+4.  **Niveau 3 : Styles Spécifiques à une Vue (Ex: `src/app/presentation/pages/views/home/`)**
+    *   Pour chaque "vue" (comme la page d'accueil "Home") :
+    *   **`core_styles/abstracts/_home-variables.scss` (ou `_<nom_vue>-variables.scss`) :**
+        *   **Rôle :** Variables SCSS spécifiques *uniquement* à cette vue. Elles peuvent surcharger ou compléter les variables de `_variables-core.scss`.
+        *   **Pourquoi ici :** Pour garder les spécificités de la vue séparées des variables globales.
+        *   **Contenu :** `$max-width-container-home`, `$home-title-glow-color`.
+    *   **`core_styles/layout/_home-layout.scss` (ou `_<nom_vue>-layout.scss`) :**
+        *   **Rôle :** Styles de la structure principale et de la mise en page *uniquement* pour cette vue.
+        *   **Pourquoi ici :** Sépare la structure de la page des styles des petits composants.
+        *   **Contenu :** Styles pour `.home-todo-container`, `.todo-list-wrapper`. Il `@use`ra les variables communes et celles spécifiques à la vue, ainsi que les mixins communs.
+    *   **`core_styles/components/` (ex: `_task-input.scss`, `_task-item.scss`) :**
+        *   **Rôle :** Styles pour les "sous-composants" ou éléments qui sont principalement (ou uniquement) utilisés dans *cette vue spécifique*.
+        *   **Pourquoi ici :** Si un composant est très lié à une seule vue, ses styles peuvent vivre ici. S'il devient réutilisable ailleurs, envisagez de le déplacer vers `common_ui_components`.
+        *   **Contenu :** Styles pour `.task-input-form`, `.task-item`. Ils `@use`ront les variables et mixins.
+    *   **`core_styles/home.scss` (ou `_<nom_vue>.scss`) :**
+        *   **Rôle :** Le **point d'entrée SCSS pour cette vue**. Il assemble tout.
+        *   **Pourquoi ici :** C'est le fichier que votre composant React de vue (ex: `home.view.tsx`) importera pour appliquer tous les styles nécessaires à cette vue.
+        *   **Contenu :** Une série de `@use` pour importer les abstractions communes, les abstractions de la vue, le layout de la vue, et les composants de la vue.
+            ```scss
+            // home.scss
+            @use 'variables-core' as v; // Depuis common_scss_abstracts via includePaths
+            @use 'mixins-core' as mix;   // Depuis common_scss_abstracts via includePaths
+
+            @use './abstracts/home-variables' as page-v; // Spécifique à la home
+            @use './layout/home-layout';                // Spécifique à la home
+            @use './components/task-input';             // Spécifique à la home
+            @use './components/task-item';              // Spécifique à la home
+            // ... autres styles spécifiques à la page si vraiment nécessaire ...
+            ```
+
+5.  **Niveau 4 : Composants React de Vue (Ex: `src/app/presentation/pages/views/home/home.view.tsx`)**
+    *   **Rôle :** Le composant React qui représente la vue.
+    *   **Pourquoi ici :** C'est la logique et le JSX de votre page.
+    *   **Contenu :** Importe son point d'entrée SCSS principal : `import './core_styles/home.scss';`.
+
+**Flux de Dépendances (Simplifié) :**
+
+`home.view.tsx` -> importe `home.scss`
+
+`home.scss` -> `@use` (assemble) :
+    *   `variables-core`, `mixins-core` (communs)
+    *   `_home-variables` (spécifique vue)
+    *   `_home-layout` (spécifique vue)
+    *   `_task-input`, `_task-item` (spécifique vue)
+
+Les fichiers comme `_home-layout.scss`, `_task-input.scss`, etc., `@use`ront à leur tour `variables-core`, `mixins-core`, et potentiellement `_home-variables` si besoin.
+
+**Conclusion sur la Redondance :**
+
+
+Cette structure vise un bon équilibre entre la réutilisabilité (avec `common_scss_abstracts`), l'organisation spécifique à chaque vue, et la maintenabilité à long terme. Chaque fichier a un rôle clair.
+
+Est-ce que ce récapitulatif et cette clarification sur la redondance vous aident à mieux comprendre l'architecture SCSS que nous mettons en place ?

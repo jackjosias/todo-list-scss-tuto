@@ -1,0 +1,61 @@
+// src/app/presentation/common_scss_abstracts/_mixins-core.scss
+/**
+ * 🛠️ _mixins-core.scss - Mixins SCSS utilitaires et partagés.
+ * @author Jack-Josias 😈 v4.0 // Modifié par Jack-Josias_ULTIMATE_v7.2.0 pour la structure
+ */
+@use 'variables-core' as v; // Cet import est crucial
+
+
+// 📱 Media Query Mixin (Mobile First)
+@mixin respond-to($breakpoint-key) 
+{
+  $breakpoint-value: null;
+
+  // CONVENTION_COMMENTAIRES_JACK_JOSIAS_EMOJI_V7_2_0:
+  // ✅ Utilisation correcte de la map v.$breakpoints.
+  // @author Jack-Josias_ULTIMATE_v7.2.0
+  @if map-has-key(v.$breakpoints, $breakpoint-key) { // Doit utiliser v.$breakpoints
+    $breakpoint-value: map-get(v.$breakpoints, $breakpoint-key);
+  } @else {
+    @if type-of($breakpoint-key) == number and unitless($breakpoint-key) == false {
+      $breakpoint-value: $breakpoint-key;
+    } @else {
+      @warn "Breakpoint '#{$breakpoint-key}' non reconnu dans la map $breakpoints ou valeur invalide. Utilisez une clé de la map (xs, sm, md, lg, xl) ou une valeur numérique avec unité (ex: 700px).";
+    }
+  }
+
+  @if $breakpoint-value {
+    @media (min-width: $breakpoint-value) {
+      @content;
+    }
+  }
+}
+
+// ✨ Visibilité du Focus pour l'Accessibilité
+@mixin focus-ring($color: v.$color-accent-primary, $offset: 0.2rem, $width: 0.2rem) {
+  &:focus-visible {
+    outline: $width solid $color;
+    outline-offset: $offset;
+  }
+}
+
+// 🕶️ Cacher un élément de manière accessible
+@mixin visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+// 📐 Centrage Flexbox rapide
+@mixin flex-center($direction: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}

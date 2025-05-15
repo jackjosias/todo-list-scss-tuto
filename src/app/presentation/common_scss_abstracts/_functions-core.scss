@@ -1,0 +1,29 @@
+// src/app/presentation/common_scss_abstracts/_functions-core.scss
+/**
+ * 🔮 _functions-core.scss - Fonctions SCSS utilitaires et partagées.
+ * @author Jack-Josias 😈 v4.0 // Modifié par Jack-Josias_ULTIMATE_v7.2.0 pour la structure
+ */
+@use 'sass:math';
+
+// CONVENTION_COMMENTAIRES_JACK_JOSIAS_EMOJI_V7_2_0:
+// 💡 Pour l'instant, pas de fonctions personnalisées nécessaires.
+// Ce fichier est prêt si le besoin se présente.
+// @author Jack-Josias_ULTIMATE_v7.2.0
+
+@function px-to-rem($pixels, $base-font-size: 16) {
+  @if unitless($pixels) {
+     @warn "La valeur en pixels '#{$pixels}' a été fournie sans unité. En supposant 'px'.";
+  } @else if unit($pixels) != "px" {
+     @warn "La valeur '#{$pixels}' n'est pas en pixels.";
+     @return $pixels; // Retourne la valeur originale si ce n'est pas des px
+  }
+  // Conversion en nombre sans unité pour la division
+  $pixels-numeric: math.div($pixels, 1px);
+  @return math.div($pixels-numeric, $base-font-size) * 1rem;
+}
+
+// Utilisation
+.element {
+  font-size: px-to-rem(24px); // Résultat: 1.5rem (si base-font-size est 16)
+  padding: px-to-rem(10);     // Fonctionnera aussi, avec un warning
+}

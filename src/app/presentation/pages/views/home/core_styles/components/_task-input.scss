@@ -1,0 +1,75 @@
+// src/app/presentation/pages/views/home/core_styles/components/_task-input.scss
+/**
+ * ⌨️ _task-input.scss - Styles pour le champ d'ajout de tâche et le bouton.
+ * @author Jack-Josias 😈 v4.0 // Modifié par Jack-Josias_ULTIMATE_v7.2.0 pour la structure
+ */
+// CONVENTION_COMMENTAIRES_JACK_JOSIAS_EMOJI_V7_2_0:
+// ✅ Imports utilisant les alias définis via `includePaths`.
+// @author Jack-Josias_ULTIMATE_v7.2.0
+@use 'variables-core' as v;
+@use 'mixins-core' as mix;
+
+.task-input-form {
+  display: flex;
+  gap: v.$spacing-unit * 1.5;
+  margin-bottom: v.$spacing-unit * 3; // Un peu plus d'espace
+}
+
+.task-input-field {
+  flex-grow: 1;
+  padding: (v.$spacing-unit * 1.5) (v.$spacing-unit * 2);
+  background-color: v.$color-bg-dark;
+  color: v.$color-text-primary;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-medium;
+  font-size: v.$font-size-base;
+  font-family: v.$font-primary;
+  transition: border-color v.$transition-fast, box-shadow v.$transition-fast;
+
+  &::placeholder {
+    color: v.$color-text-secondary;
+    opacity: 0.8;
+  }
+
+  // CONVENTION_COMMENTAIRES_JACK_JOSIAS_EMOJI_V7_2_0:
+  // ✨ Amélioration du style de focus.
+  // @author Jack-Josias_ULTIMATE_v7.2.0
+  &:focus {
+    border-color: v.$color-accent-primary;
+    box-shadow: 0 0 0 0.25rem rgba(v.$color-accent-primary, 0.25); // Effet de halo plus prononcé
+    outline: none; // Supprimer l'outline par défaut si box-shadow est utilisé pour le focus
+  }
+  // Utilisation du mixin pour focus-visible pour une meilleure accessibilité
+  @include mix.focus-ring(v.$color-accent-primary, 0.1rem, 0.25rem);
+}
+
+.task-add-button {
+  padding: (v.$spacing-unit * 1.5) (v.$spacing-unit * 3);
+  background-color: v.$color-accent-primary;
+  color: v.$color-text-primary;
+  border: none;
+  border-radius: v.$radius-medium;
+  font-weight: v.$font-weight-medium;
+  font-family: v.$font-primary;
+  transition: background-color v.$transition-fast, transform v.$transition-fast, box-shadow v.$transition-fast;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: lighten(v.$color-accent-primary, 5%);
+    box-shadow: 0 0.2rem 0.8rem rgba(v.$color-accent-primary, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+    background-color: darken(v.$color-accent-primary, 5%);
+  }
+
+  &:disabled {
+    background-color: v.$color-bg-light;
+    color: v.$color-text-disabled;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  @include mix.focus-ring(v.$color-accent-primary, 0.1rem, 0.25rem);
+}

@@ -1,0 +1,110 @@
+// src/app/presentation/pages/views/home/core_styles/components/_task-item.scss
+/**
+ * ✅ _task-item.scss - Styles pour un élément individuel de la liste de tâches.
+ * @author Jack-Josias 😈 v4.0 // Modifié par Jack-Josias_ULTIMATE_v7.2.0 pour la structure
+ */
+// CONVENTION_COMMENTAIRES_JACK_JOSIAS_EMOJI_V7_2_0:
+// ✅ Imports utilisant les alias définis via `includePaths`.
+// @author Jack-Josias_ULTIMATE_v7.2.0
+@use 'variables-core' as v;
+@use 'mixins-core' as mix;
+@use '../abstracts/_home-variables.scss' as page-v; // Pour $task-item-hover-bg
+
+.task-item {
+  @include mix.flex-center(row, space-between); // Aligne le bouton à droite
+  gap: v.$spacing-unit * 1.5;
+  padding: (v.$spacing-unit * 1.5);
+  background-color: v.$color-bg-light;
+  border-radius: v.$radius-medium;
+  margin-bottom: v.$spacing-unit * 1.5; // Espace entre les items
+  transition: background-color v.$transition-smooth, opacity v.$transition-smooth, transform v.$transition-fast;
+  position: relative; // Pour le pseudo-élément de "complété"
+  border-left: 4px solid transparent; // Pour un indicateur visuel subtil
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    background-color: page-v.$task-item-hover-bg or lighten(v.$color-bg-light, 3%); // Utilise variable de page ou fallback
+    border-left-color: v.$color-accent-primary;
+  }
+
+  &__text {
+    flex-grow: 1;
+    color: v.$color-text-primary;
+    font-family: v.$font-primary;
+    cursor: pointer;
+    font-size: v.$font-size-base;
+    position: relative;
+    transition: color v.$transition-smooth;
+    padding: (v.$spacing-unit * 0.5) 0; // Petit padding pour le clic
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      height: 2px;
+      width: 0;
+      background-color: v.$color-accent-secondary;
+      transition: width v.$transition-smooth;
+    }
+  }
+
+  &--completed {
+    opacity: 0.6; // Plus estompé
+    background-color: darken(v.$color-bg-light, 5%);
+    border-left-color: v.$color-accent-success;
+
+    .task-item__text {
+      color: v.$color-text-disabled;
+      &::after {
+        width: 100%;
+        background-color: v.$color-text-disabled; // Barre de la même couleur que le texte
+      }
+    }
+  }
+
+  &__delete-button {
+    background-color: transparent;
+    color: v.$color-text-secondary;
+    padding: v.$spacing-unit;
+    border-radius: v.$radius-small;
+    line-height: 0;
+    border: none;
+    cursor: pointer;
+    transition: color v.$transition-fast, background-color v.$transition-fast;
+
+    svg {
+      width: 1.8rem;
+      height: 1.8rem;
+      fill: currentColor;
+    }
+
+    &:hover {
+      color: v.$color-accent-secondary;
+      background-color: rgba(v.$color-accent-secondary, 0.1);
+    }
+    @include mix.focus-ring(v.$color-accent-secondary);
+  }
+
+  // Animation à l'apparition
+  opacity: 0;
+  transform: scale(0.95) translateY(1rem);
+  animation: taskItemFadeIn 0.4s v.$transition-smooth forwards;
+
+  // Pour décaler l'animation des items successifs
+  @for $i from 1 through 10 { // Anime les 10 premiers items différemment
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+}
+
+@keyframes taskItemFadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

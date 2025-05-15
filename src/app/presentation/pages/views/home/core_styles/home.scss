@@ -1,0 +1,48 @@
+// src/app/presentation/pages/views/home/core_styles/home.scss
+/**
+ * 🔥 home.scss - Point d'entrée SCSS principal pour la vue Home (Todo List).
+ * Assemble tous les styles nécessaires pour cette vue.
+ * @author Jack-Josias 😈 v4.0 // Modifié par Jack-Josias_ULTIMATE_v7.2.0 pour la structure
+ */
+
+// 1. Abstractions Communes (Variables, Mixins, Fonctions de base)
+// Celles-ci sont cherchées dans les `includePaths` de SASS (configuré dans next.config.mjs).
+@use 'variables-core' as v;
+@use 'mixins-core' as mix;
+// @use 'functions-core' as f; // Décommenter si vous avez des fonctions
+
+// 2. Abstractions Spécifiques à la Page Home
+// Chemin relatif correct depuis /core_styles/ vers /core_styles/abstracts/
+@use './abstracts/home-variables' as page-v;
+
+// 3. Styles de Base pour la Page Home (si besoin d'override)
+// Pour l'instant, globals.css et le layout principal suffisent.
+// @use './base/home-base'; // Si vous créez ce dossier/fichier
+
+// 4. Styles de Layout pour la Page Home
+// Chemin relatif correct
+@use './layout/home-layout'; // Doit trouver _home-layout.scss dans ./layout/
+
+// 5. Styles des Composants utilisés dans la Page Home
+// Chemins relatifs corrects
+@use './components/task-input'; // Doit trouver _task-input.scss dans ./components/
+@use './components/task-item';  // Doit trouver _task-item.scss dans ./components/
+
+// Styles spécifiques à la page home qui ne rentrent pas ailleurs (à utiliser avec parcimonie)
+.no-tasks-message {
+  text-align: center;
+  color: v.$color-text-secondary;
+  margin-top: (v.$spacing-unit * 4);
+  font-style: italic;
+  font-family: v.$font-primary;
+  font-size: v.$font-size-base;
+  opacity: 0;
+  animation: fadeInMessage 0.5s v.$transition-smooth forwards 0.5s;
+  -webkit-animation: fadeInMessage 0.5s v.$transition-smooth forwards 0.5s;
+}
+
+@keyframes fadeInMessage {
+  to {
+    opacity: 0.8;
+  }
+}

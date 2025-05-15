@@ -1,0 +1,56 @@
+// src/app/presentation/pages/views/home/core_styles/layout/_home-layout.scss
+@use 'variables-core' as v;
+@use 'mixins-core' as mix;
+@use '../abstracts/home-variables' as page-v; // Chemin relatif vers le dossier abstracts
+
+.home-todo-container {
+  @include mix.flex-center(column);
+  min-height: 100svh;
+  padding: (v.$spacing-unit * 4) (v.$spacing-unit * 2);
+  background: linear-gradient(135deg, v.$color-bg-darkest 0%, v.$color-bg-dark 100%);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.todo-list-wrapper {
+  background-color: v.$color-bg-medium;
+  padding: (v.$spacing-unit * 3);
+  border-radius: v.$radius-large;
+  box-shadow: 0 1rem 3rem rgba(v.$color-bg-darkest, 0.5);
+  width: 100%;
+  max-width: page-v.$max-width-container-home or 60rem;
+  margin-top: v.$spacing-unit * 2;
+  margin-bottom: v.$spacing-unit * 4;
+
+  @include mix.respond-to(sm) {
+    padding: (v.$spacing-unit * 4);
+    margin-top: v.$spacing-unit * 4;
+  }
+}
+
+.home-title {
+  font-size: v.$font-size-xlarge;
+  font-family: v.$font-primary;
+  color: v.$color-text-primary;
+  margin-bottom: (v.$spacing-unit * 3);
+  text-align: center;
+  font-weight: v.$font-weight-bold;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px page-v.$home-title-glow-color, 0 0 20px rgba(v.$color-accent-secondary, 0.3);
+  opacity: 0;
+  transform: translateY(-2rem);
+  animation: titleFadeIn 0.6s v.$transition-smooth forwards 0.2s;
+}
+
+.task-list {
+  margin-top: (v.$spacing-unit * 3);
+  padding-left: 0;
+  list-style: none;
+}
+
+@keyframes titleFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

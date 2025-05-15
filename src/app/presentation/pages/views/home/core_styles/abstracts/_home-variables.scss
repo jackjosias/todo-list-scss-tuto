@@ -1,0 +1,19 @@
+// src/app/presentation/pages/views/home/core_styles/abstracts/_home-variables.scss
+/**
+ * 🏡 _home-variables.scss - Variables SCSS spécifiques à la vue Home (Todo List).
+ * Peut surcharger ou étendre les variables de _variables-core.scss.
+ * @author Jack-Josias 😈 v4.0 // Modifié par Jack-Josias_ULTIMATE_v7.2.0 pour la structure
+ */
+@use 'variables-core' as core;
+
+// CONVENTION_COMMENTAIRES_JACK_JOSIAS_EMOJI_V7_2_0:
+// 💡 Variables spécifiques à la page Home.
+// $max-width-container-home est maintenant DÉCOMMENTÉE et définie.
+// @author Jack-Josias_ULTIMATE_v7.2.0
+
+// Exemple d'override ou de variable spécifique à la page Home
+// $background-home-gradient: linear-gradient(135deg, core.$color-bg-dark, core.$color-bg-darkest);
+$max-width-container-home: 70rem; // ✅ Décommenté et défini
+
+$home-title-glow-color: rgba(core.$color-accent-primary, 0.5);
+$task-item-hover-bg: lighten(core.$color-bg-light, 5%);

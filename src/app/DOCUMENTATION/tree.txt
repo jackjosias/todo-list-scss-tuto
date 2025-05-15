@@ -1,0 +1,59 @@
+/todo-list-scss-inferno
+├── ...
+├── src/
+│   ├── app/                                  # Point d'entrée Next.js App Router
+│   │   ├── (marketing)/
+│   │   │   ├── about/
+│   │   │   │   └── page.tsx
+│   │   │   └── contact/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── (todos)/
+│   │   │   └── page.tsx
+│   │   │
+│   │   ├── presentation/                   # 🔥 TON UNIQUE COUCHE DE PRÉSENTATION 🔥
+│   │   │   ├── common_scss_abstracts/      # ✅ Abstractions SCSS (variables, mixins) PARTAGÉES DANS LA PRÉSENTATION
+│   │   │   │   ├── _variables-core.scss
+│   │   │   │   ├── _mixins-core.scss
+│   │   │   │   └── _functions-core.scss
+│   │   │   │
+│   │   │   ├── common_ui_components/       # Composants UI React VRAIMENT partagés entre plusieurs vues
+│   │   │   │   ├── Button/
+│   │   │   │   │   ├── Button.tsx
+│   │   │   │   │   └── Button.module.scss
+│   │   │   │   └── ...
+│   │   │   │
+│   │   │   └── pages/                      # Contient les "vues" spécifiques
+│   │   │       └── views/
+│   │   │           ├── home/               # Vue pour la Todo List
+│   │   │           │   ├── components/
+│   │   │           │   │   ├── TaskInput.tsx
+│   │   │           │   │   └── TaskItem.tsx
+│   │   │           │   ├── core_styles/
+│   │   │           │   │   ├── abstracts/
+│   │   │           │   │   │   └── _home-variables.scss
+│   │   │           │   │   ├── base/
+│   │   │           │   │   ├── components/
+│   │   │           │   │   │   ├── _task-input.scss
+│   │   │           │   │   │   └── _task-item.scss
+    │   │           │   │   │   ├── layout/
+    │   │           │   │   │   │   └── _home-layout.scss
+│   │   │           │   │   └── home.scss   # Point d'entrée SCSS pour la vue Home
+│   │   │           │   └── home.view.tsx
+│   │   │           │
+│   │   │           ├── about/
+│   │   │           │   ├── core_styles/
+│   │   │           │   │   └── about.scss
+│   │   │           │   └── about.view.tsx
+│   │   │           │
+│   │   │           └── contact/
+│   │   │               ├── core_styles/
+│   │   │               │   └── contact.scss
+│   │   │               └── contact.view.tsx
+│   │   │
+│   │   ├── layout.tsx                      # Layout Racine Global
+│   │   └── globals.css                   # Reset MINIMAL, polices globales
+│   │
+│   └── ...
+│
+└── ...

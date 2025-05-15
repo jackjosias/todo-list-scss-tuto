@@ -1,0 +1,63 @@
+// src/app/presentation/common_scss_abstracts/_variables-core.scss
+/**
+ * 💰 _variables-core.scss - Abstractions SCSS fondamentales (Couleurs, Polices, Breakpoints).
+ * Utilisées via @use par les styles spécifiques des vues.
+ * @author Jack-Josias 😈 v4.0 // Modifié par Jack-Josias_ULTIMATE_v7.2.0 pour la structure
+ */
+
+// 🎨 Palette de Couleurs Infernale
+$color-bg-darkest: #121212;
+$color-bg-dark: #1A1A1D;
+$color-bg-medium: #2C2C31;
+$color-bg-light: #3A3A40;
+
+$color-text-primary: #F5F5F7;
+$color-text-secondary: #A0A0A5;
+$color-text-disabled: #6F6F6F;
+
+$color-accent-primary: #007BFF;
+$color-accent-secondary: #E91E63;
+$color-accent-success: #4CAF50;
+$color-accent-warning: #FFC107;
+$color-border: #4A4A50;
+
+// 🖋️ Typographie
+$font-primary: '--font-geist-sans', sans-serif;
+$font-mono: '--font-geist-mono', sans-serif;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+$font-size-base: 1.6rem;
+$font-size-small: 1.4rem;
+$font-size-medium: 1.8rem;
+$font-size-large: 2.4rem;
+$font-size-xlarge: 3.2rem;
+
+// 📏 Espacements & Dimensions
+$spacing-unit: 0.8rem;
+$radius-small: 0.4rem;
+$radius-medium: 0.8rem;
+$radius-large: 1.2rem;
+
+// 📱 Breakpoints (Mobile First)
+$bp-xs: 375px;
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+// CONVENTION_COMMENTAIRES_JACK_JOSIAS_EMOJI_V7_2_0:
+// 🗺️ La map $breakpoints DOIT être définie ici.
+// @author Jack-Josias_ULTIMATE_v7.2.0
+$breakpoints: (
+  'xs': $bp-xs,
+  'sm': $bp-sm,
+  'md': $bp-md,
+  'lg': $bp-lg,
+  'xl': $bp-xl
+);
+
+// ✨ Transitions
+$transition-fast: 0.15s ease-in-out;
+$transition-smooth: 0.3s ease-in-out;
